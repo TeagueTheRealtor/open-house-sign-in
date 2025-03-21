@@ -64,51 +64,47 @@
         <form id="signInForm">
             <label for="first-name">First Name:</label>
             <input type="text" id="first-name" name="first-name" required>
-            
+
             <label for="last-name">Last Name:</label>
             <input type="text" id="last-name" name="last-name" required>
-            
+
             <label for="email">Email Address:</label>
             <input type="email" id="email" name="email" required>
-            
+
             <label for="phone">Phone Number:</label>
             <input type="tel" id="phone" name="phone" required>
-            
+
             <button type="submit">Continue to Open House Details</button>
         </form>
     </div>
 
-    <!-- ✅ JavaScript moved to the bottom to ensure the form is loaded first -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var form = document.getElementById("signInForm");
-            if (!form) {
-                console.error("Form element not found.");
-                return;
-            }
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("signInForm");
 
-            form.addEventListener("submit", function(event) {
-                event.preventDefault(); // Prevent default form submission
-                
-                var formData = {
-                    firstName: document.getElementById("first-name").value,
-                    lastName: document.getElementById("last-name").value,
-                    email: document.getElementById("email").value,
-                    phone: document.getElementById("phone").value
-                };
-                
-                fetch("https://script.google.com/macros/s/AKfycbyVLwqG6a9rkq1Hii4sygTFaG3qDo7gCtFk8lP35JaFiNPiMW2G2VHLnW8OPWQg-b5u9w/exec", {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                const urlParams = new URLSearchParams();
+                formData.forEach((value, key) => {
+                    urlParams.append(key, value);
+                });
+
+                const scriptURL = "hhttps://script.google.com/macros/s/AKfycbyVLwqG6a9rkq1Hii4sygTFaG3qDo7gCtFk8lP35JaFiNPiMW2G2VHLnW8OPWQg-b5u9w/exec";
+
+                fetch(scriptURL, {
                     method: "POST",
-                    mode: "no-cors",  // Prevents CORS and 401 errors
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData)
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: urlParams
                 })
-                .then(response => response.text())
-                .then(data => {
-                    console.log("Success:", data);
-                    window.location.href = "open-house-details.html"; // Redirect after submission
+                .then(() => {
+                    window.location.href = "open-house-details.html";
                 })
-                .catch(error => console.error("Error:", error));
+                .catch(error => console.error("Submission error:", error));
             });
         });
     </script>
