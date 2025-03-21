@@ -92,10 +92,13 @@
                         phone: document.getElementById("phone").value
                     };
                     
-                    fetch("https://script.google.com/macros/s/AKfycbzaUdyg2IfJGj3nihXGi-PrRwIUm3y6qnwapn6UYUS7PTjwXdXJ6qFGEKB7-Mp17geSyA/exec", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(formData)
+                    fetch("https://script.google.com/macros/s/AKfycbyVLwqG6a9rkq1Hii4sygTFaG3qDo7gCtFk8lP35JaFiNPiMW2G2VHLnW8OPWQg-b5u9w/exec", {
+    method: "POST",
+    mode: "no-cors",  // This prevents CORS and 401 errors
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+})
+
                     })
                     .then(response => response.text())
                     .then(data => {
