@@ -79,34 +79,45 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("signInForm");
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("signInForm");
+        const messageContainer = document.createElement("p");
+        messageContainer.style.marginTop = "20px";
+        messageContainer.style.fontWeight = "bold";
+        form.appendChild(messageContainer);
 
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-                const formData = new FormData(form);
-                const urlParams = new URLSearchParams();
-                formData.forEach((value, key) => {
-                    urlParams.append(key, value);
-                });
+            const formData = new FormData(form);
+            const urlParams = new URLSearchParams();
+            formData.forEach((value, key) => {
+                urlParams.append(key, value);
+            });
 
-                const scriptURL = "hhttps://script.google.com/macros/s/AKfycbyVLwqG6a9rkq1Hii4sygTFaG3qDo7gCtFk8lP35JaFiNPiMW2G2VHLnW8OPWQg-b5u9w/exec";
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyVLwqG6a9rkq1Hii4sygTFaG3qDo7gCtFk8lP35JaFiNPiMW2G2VHLnW8OPWQg-b5u9w/exec";
 
-                fetch(scriptURL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: urlParams
-                })
-                .then(() => {
-                    window.location.href = "open-house-details.html";
-                })
-                .catch(error => console.error("Submission error:", error));
+            fetch(scriptURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: urlParams
+            })
+            .then(response => response.text())
+            .then(data => {
+                messageContainer.textContent = "✅ Thank you! You’re signed in.";
+                messageContainer.style.color = "green";
+                form.reset();
+            })
+            .catch(error => {
+                console.error("Submission error:", error);
+                messageContainer.textContent = "❌ Oops! Something went wrong. Please try again.";
+                messageContainer.style.color = "red";
             });
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
